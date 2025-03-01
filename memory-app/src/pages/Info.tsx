@@ -1,5 +1,11 @@
+import Card from "../components/Card";
+
 const Info = () => {
-    return <h1>Page Info</h1>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Card title="Info"/>
+    </div>
+  )
   };
   
   export default Info;

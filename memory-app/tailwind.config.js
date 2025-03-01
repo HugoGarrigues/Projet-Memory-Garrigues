@@ -1,11 +1,11 @@
-module.exports = {
-    content: [
-      "./index.html",   // Inclure l'index.html pour que Tailwind analyse ce fichier.
-      "./src/**/*.{js,ts,jsx,tsx}", // Analyse tous les fichiers JS/JSX/TS/TX à l'intérieur de src
-    ],
-    theme: {
-      extend: {},
-    },
-    plugins: [],
-  }
-  
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("daisyui")], // Ajout de DaisyUI
+  daisyui: {
+    themes: ["light", "dark"], // Active les thèmes DaisyUI
+  },
+};
