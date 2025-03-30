@@ -13,6 +13,7 @@ const CardManagement = () => {
   const [editingCardId, setEditingCardId] = useState<number | null>(null);
   const [editedCardFront, setEditedCardFront] = useState<string>("");
   const [editedCardBack, setEditedCardBack] = useState<string>("");
+  const [editedCardLevel, setEditedCardLevel] = useState<number>(1);
 
   const category = categories.find((cat) => cat.id.toString() === categoryId);
   const theme = category?.themes.find((theme) => theme.id.toString() === themeId);
@@ -39,10 +40,11 @@ const CardManagement = () => {
     }
   };
 
-  const handleEditCard = (cardId: number, cardFront: string, cardBack: string) => {
+  const handleEditCard = (cardId: number, cardFront: string, cardBack: string, cardLevel: number) => {
     setEditingCardId(cardId);
     setEditedCardFront(cardFront);
     setEditedCardBack(cardBack);
+    setEditedCardLevel(cardLevel);
   };
 
   const handleSaveCard = () => {
@@ -51,7 +53,7 @@ const CardManagement = () => {
         id: editingCardId!,
         front: editedCardFront,
         back: editedCardBack,
-        level: 1,
+        level: editedCardLevel,
         lastReviewed: new Date(),
         nextReviewDate: new Date(),
         themeId: theme.id
@@ -60,11 +62,16 @@ const CardManagement = () => {
       setEditingCardId(null);
       setEditedCardFront("");
       setEditedCardBack("");
+      setEditedCardLevel(1);
     }
   };
 
   const handleRemoveCard = (cardId: number) => {
     removeCard(theme.id, cardId);
+  };
+
+  const handleLevelChange = (newLevel: number) => {
+    setEditedCardLevel(newLevel);
   };
 
   return (
@@ -74,7 +81,6 @@ const CardManagement = () => {
       </h2>
 
       {/* Form pour créer les Cartes */}
-      {/* TODO : Faire une gestion d'érreur ou une popup a l'affichage pour une meilleure compréhension  */}
       <div className="mb-6 space-y-4">
         <input
           type="text"
@@ -98,8 +104,6 @@ const CardManagement = () => {
         </button>
       </div>
 
-      {/* TODO : Améliorer le CSS de la carte pour faire en sorte qu'elle se retourne... a voir */}
-      
       {/* Affichage des Cartes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {theme.cards.map((card) => (
@@ -119,6 +123,18 @@ const CardManagement = () => {
                     onChange={(e) => setEditedCardBack(e.target.value)}
                     className="input input-bordered input-secondary w-full"
                   />
+                  <select
+                    className="select select-bordered input-secondary w-full"
+                    value={editedCardLevel} // On utilise ici editedCardLevel
+                    onChange={(e) => handleLevelChange(parseInt(e.target.value, 10))}
+                  >
+                    {[1, 2, 3, 4, 5].map((lvl) => (
+                      <option key={lvl} value={lvl}>
+                        Niveau {lvl}
+                      </option>
+                    ))}
+                  </select>
+
                   <div className="flex space-x-4">
                     <button
                       onClick={handleSaveCard}
@@ -140,10 +156,12 @@ const CardManagement = () => {
                     <strong>Question:</strong> {card.front}
                     <br />
                     <strong>Réponse:</strong> {card.back}
+                    <br />
+                    <strong>Niveau:</strong> {card.level}
                   </div>
                   <div className="flex space-x-4">
                     <button
-                      onClick={() => handleEditCard(card.id, card.front, card.back)}
+                      onClick={() => handleEditCard(card.id, card.front, card.back, card.level)}
                       className="btn btn-info w-1/2"
                     >
                       Modifier

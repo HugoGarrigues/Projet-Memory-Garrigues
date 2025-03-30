@@ -6,12 +6,18 @@ import { Card } from "../types/card";
 
 const useMemoryStore = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [newCardsToday, setNewCardsToday] = useState(0);
 
   // Utilisation de useEffect qui va permettre de récupérer les catégories sauvegardées dans le localStorage
   useEffect(() => {
     const savedCategories = localStorage.getItem("categories");
     if (savedCategories) {
       setCategories(JSON.parse(savedCategories));
+    }
+
+    const savedNewCardsToday = localStorage.getItem("newCardsToday");
+    if (savedNewCardsToday) {
+      setNewCardsToday(JSON.parse(savedNewCardsToday));
     }
   }, []);
 
@@ -20,36 +26,35 @@ const useMemoryStore = () => {
     if (categories.length > 0) {
       localStorage.setItem("categories", JSON.stringify(categories));
     } else {
-      localStorage.removeItem("categories");  // Ajout de cette ligne parce que j'avais une erreur qui faisait que je ne pouvais pas supprimer toutes les catégories 
+      localStorage.removeItem("categories");
     }
   }, [categories]);
-  
+
+  useEffect(() => {
+    localStorage.setItem("newCardsToday", JSON.stringify(newCardsToday));
+  }, [newCardsToday]);
 
   // Permet d'ajouter une catégorie
   const addCategory = (category: Category) => {
-    setCategories((prevCategories) => [...prevCategories, category]);
+    setCategories((prev) => [...prev, category]);
   };
 
   // Permet d'ajouter un thème dans une catégorie
   const addTheme = (categoryId: number, theme: Theme) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) =>
-        category.id === categoryId
-          ? { ...category, themes: [...category.themes, theme] }
-          : category
+    setCategories((prev) =>
+      prev.map((category) =>
+        category.id === categoryId ? { ...category, themes: [...category.themes, theme] } : category
       )
     );
   };
 
   // Permet d'ajouter une carte dans un thème
   const addCard = (themeId: number, card: Card) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) => ({
+    setCategories((prev) =>
+      prev.map((category) => ({
         ...category,
         themes: category.themes.map((theme) =>
-          theme.id === themeId
-            ? { ...theme, cards: [...theme.cards, card] }
-            : theme
+          theme.id === themeId ? { ...theme, cards: [...theme.cards, card] } : theme
         ),
       }))
     );
@@ -57,13 +62,11 @@ const useMemoryStore = () => {
 
   //  supprimer une carte d'un thème
   const removeCard = (themeId: number, cardId: number) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) => ({
+    setCategories((prev) =>
+      prev.map((category) => ({
         ...category,
         themes: category.themes.map((theme) =>
-          theme.id === themeId
-            ? { ...theme, cards: theme.cards.filter((card) => card.id !== cardId) }
-            : theme
+          theme.id === themeId ? { ...theme, cards: theme.cards.filter((card) => card.id !== cardId) } : theme
         ),
       }))
     );
@@ -71,8 +74,8 @@ const useMemoryStore = () => {
 
   // Supprime un thème d'une catégorie
   const removeTheme = (categoryId: number, themeId: number) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) =>
+    setCategories((prev) =>
+      prev.map((category) =>
         category.id === categoryId
           ? { ...category, themes: category.themes.filter((theme) => theme.id !== themeId) }
           : category
@@ -82,30 +85,24 @@ const useMemoryStore = () => {
 
   // Supprime une catégorie
   const removeCategory = (categoryId: number) => {
-    setCategories((prevCategories) =>
-      prevCategories.filter((category) => category.id !== categoryId)
-    );
+    setCategories((prev) => prev.filter((category) => category.id !== categoryId));
   };
 
   // Modifie une catégorie
   const updateCategory = (categoryId: number, newName: string) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) =>
-        category.id === categoryId ? { ...category, name: newName } : category
-      )
+    setCategories((prev) =>
+      prev.map((category) => (category.id === categoryId ? { ...category, name: newName } : category))
     );
   };
 
   // Modifie un thème
   const updateTheme = (categoryId: number, themeId: number, newName: string) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) =>
+    setCategories((prev) =>
+      prev.map((category) =>
         category.id === categoryId
           ? {
               ...category,
-              themes: category.themes.map((theme) =>
-                theme.id === themeId ? { ...theme, name: newName } : theme
-              ),
+              themes: category.themes.map((theme) => (theme.id === themeId ? { ...theme, name: newName } : theme)),
             }
           : category
       )
@@ -114,21 +111,29 @@ const useMemoryStore = () => {
 
   // Modifie une carte
   const updateCard = (cardId: number, updatedCard: Card) => {
-    setCategories((prevCategories) =>
-      prevCategories.map((category) => ({
+    setCategories((prev) =>
+      prev.map((category) => ({
         ...category,
         themes: category.themes.map((theme) => ({
           ...theme,
-          cards: theme.cards.map((card) =>
-            card.id === cardId ? { ...card, ...updatedCard } : card
-          ),
+          cards: theme.cards.map((card) => (card.id === cardId ? { ...card, ...updatedCard } : card)),
         })),
       }))
     );
   };
 
-  // Ici je retourne toutes les infos nécessaires pour gérer les catégories, thèmes et cartes depuis les composants
+  // Récupérer les cartes à réviser ( ne prend pas en compte les niveaux de révision )
+  const getCardsToReview = (): Card[] => {
+    return categories.flatMap(category =>
+      category.themes.flatMap(theme =>
+        theme.cards
+      )
+    );
+  };
+
+
   return {
+    // Fonctions pour la gestion des catégories, thèmes et cartes
     categories,
     addCategory,
     addTheme,
@@ -139,6 +144,8 @@ const useMemoryStore = () => {
     updateCategory,
     updateTheme,
     updateCard,
+    // Fonction pour récupérer les cartes à réviser
+    getCardsToReview,
   };
 };
 
