@@ -131,6 +131,34 @@ const useMemoryStore = () => {
     );
   };
 
+  // Fonction pour sélectionner une catégorie (une seule à la fois)
+  const selectCategory = (categoryId: number) => {
+    setCategories((prev) =>
+      prev.map((category) => ({
+        ...category,
+        selected: category.id === categoryId, // Si l'ID correspond, la catégorie est sélectionnée
+      }))
+    );
+  };
+
+    // Permet de sélectionner et ou désélectionner un thème
+    const selectTheme = (categoryId: number, themeId: number) => {
+      setCategories((prev) =>
+        prev.map((category) => {
+          if (category.id === categoryId) {
+            return {
+              ...category,
+              themes: category.themes.map((theme) =>
+                theme.id === themeId
+                  ? { ...theme, selected: !theme.selected }  
+                  : theme
+              ),
+            };
+          }
+          return category;
+        })
+      );
+    };
 
   return {
     // Fonctions pour la gestion des catégories, thèmes et cartes
@@ -144,8 +172,11 @@ const useMemoryStore = () => {
     updateCategory,
     updateTheme,
     updateCard,
+    selectCategory,  
+    selectTheme,   
     // Fonction pour récupérer les cartes à réviser
     getCardsToReview,
+ 
   };
 };
 

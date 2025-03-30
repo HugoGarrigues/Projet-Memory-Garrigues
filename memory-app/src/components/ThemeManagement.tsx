@@ -4,7 +4,7 @@ import useMemoryStore from "../store/UseMemoryStore";
 
 const ThemeManagement = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { categories, addTheme, removeTheme, updateTheme } = useMemoryStore();
+  const { categories, addTheme, removeTheme, updateTheme, selectTheme } = useMemoryStore();
   const [newTheme, setNewTheme] = useState<string>("");
 
   const [editingThemeId, setEditingThemeId] = useState<number | null>(null);
@@ -16,6 +16,10 @@ const ThemeManagement = () => {
     return <div className="text-error text-center">Category not found!</div>;
   }
 
+  const handleSelectTheme = (themeId: number) => {
+    selectTheme(category.id, themeId); 
+  };
+
   const handleAddTheme = () => {
     if (newTheme.trim() !== "") {
       const theme = {
@@ -23,6 +27,7 @@ const ThemeManagement = () => {
         name: newTheme,
         categoryId: category.id,
         cards: [],
+        selected: false,  
       };
       addTheme(category.id, theme);
       setNewTheme("");
@@ -52,7 +57,7 @@ const ThemeManagement = () => {
         Gestion des Thèmes de {category.name}
       </h2>
 
-      {/* Form pour ajouter des thèmes */}
+      {/* Formulaire pour ajouter des thèmes */}
       <div className="mb-6 flex space-x-4">
         <input
           type="text"
@@ -99,12 +104,20 @@ const ThemeManagement = () => {
                 </div>
               ) : (
                 <div className="flex flex-col space-y-4">
-                  <Link
-                    to={`/creation/${category.id}/${theme.id}`}
-                    className="text-2xl font-semibold text-accent hover:text-accent-focus"
-                  >
-                    {theme.name}
-                  </Link>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={theme.selected}
+                      onChange={() => handleSelectTheme(theme.id)} 
+                      className="checkbox checkbox-primary"
+                    />
+                    <Link
+                      to={`/creation/${category.id}/${theme.id}`}
+                      className="text-2xl font-semibold text-accent hover:text-accent-focus"
+                    >
+                      {theme.name}
+                    </Link>
+                  </div>
                   <div className="flex space-x-4">
                     <button
                       onClick={() => handleEditTheme(theme.id, theme.name)}

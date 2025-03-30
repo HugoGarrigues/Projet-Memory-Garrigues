@@ -5,4 +5,5 @@ export interface Theme {
     name: string;
     categoryId: number; 
     cards: Card[];  
+    selected: boolean;
   }
