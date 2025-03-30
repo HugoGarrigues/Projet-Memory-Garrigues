@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useMemoryStore from "../store/UseMemoryStore";
 
 const CategoryManagement = () => {
-  const { categories, addCategory, removeCategory, updateCategory } = useMemoryStore(); 
+  const { categories, addCategory, removeCategory, updateCategory, selectCategory } = useMemoryStore();
   const [newCategory, setNewCategory] = useState<string>("");
 
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
@@ -15,6 +15,7 @@ const CategoryManagement = () => {
         id: Date.now(),
         name: newCategory,
         themes: [],
+        selected: false,  
       };
       addCategory(category);
       setNewCategory("");
@@ -36,6 +37,10 @@ const CategoryManagement = () => {
 
   const handleRemoveCategory = (categoryId: number) => {
     removeCategory(categoryId);
+  };
+
+  const handleSelectCategory = (categoryId: number) => {
+    selectCategory(categoryId);  
   };
 
   return (
@@ -89,16 +94,25 @@ const CategoryManagement = () => {
                 </div>
               ) : (
                 <div className="flex flex-col space-y-4">
-                  <Link
-                    to={`/creation/${category.id}`}
-                    className="text-2xl font-semibold text-accent hover:text-accent-focus"
-                  >
-                    {category.name}
-                  </Link>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      checked={category.selected}
+                      onChange={() => handleSelectCategory(category.id)} // Sélectionne la catégorie
+                      className="radio radio-primary"
+                    />
+                    <Link
+                      to={`/creation/${category.id}`}
+                      className="text-2xl font-semibold text-accent hover:text-accent-focus"
+                    >
+                      {category.name}
+                    </Link>
+                  </div>
+
                   <div className="flex space-x-4">
                     <button
                       onClick={() => handleEditCategory(category.id, category.name)}
-                      className="btn btn-info  w-1/2"
+                      className="btn btn-info w-1/2"
                     >
                       Modifier
                     </button>
