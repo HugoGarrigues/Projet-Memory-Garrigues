@@ -46,7 +46,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialSettings }) => {
             if (Notification.permission === "granted") {
                 new Notification("Il est l'heure de réviser malheuresement !", {
                     body: "Allez hop hop hop.",
-                    icon: "path-to-icon.png",
+                    icon: "../../public/brain.svg",
                 });
             }
         }, delay);
