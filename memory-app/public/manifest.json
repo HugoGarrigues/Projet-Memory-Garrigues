@@ -1,0 +1,9 @@
+{
+  "name": "Memory App",
+  "short_name": "Memory",
+  "description": "Application de carte mémoire",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
