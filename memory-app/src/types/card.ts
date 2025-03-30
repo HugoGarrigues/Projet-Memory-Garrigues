@@ -6,4 +6,5 @@ export interface Card {
   lastReviewed: Date;
   nextReviewDate: Date;
   themeId: number;
+  // TODO : Ajouter les médias
 }
