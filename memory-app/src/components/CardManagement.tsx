@@ -19,7 +19,6 @@ const CardManagement = () => {
   const theme = category?.themes.find((theme) => theme.id.toString() === themeId);
 
   if (!category || !theme) {
-    // TODO : Faire une redirection vers une page d'erreur ou une div plus sympa
     return <div className="text-error text-center mt-6">Une erreur est survenue, veuillez réessayer</div>;
   }
 
@@ -80,7 +79,7 @@ const CardManagement = () => {
         Gestion des Cartes de {theme.name}
       </h2>
 
-      {/* Form pour créer les Cartes */}
+      {/* Formulaire pour créer les Cartes */}
       <div className="mb-6 space-y-4">
         <input
           type="text"
@@ -107,7 +106,7 @@ const CardManagement = () => {
       {/* Affichage des Cartes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {theme.cards.map((card) => (
-          <div key={card.id} className="card card-bordered bg-neutral shadow-xl">
+          <div key={card.id} className="card card-bordered bg-base-200 text-base-content">
             <div className="card-body">
               {editingCardId === card.id ? (
                 <div className="flex flex-col space-y-4">
@@ -115,16 +114,16 @@ const CardManagement = () => {
                     type="text"
                     value={editedCardFront}
                     onChange={(e) => setEditedCardFront(e.target.value)}
-                    className="input input-bordered input-secondary w-full"
+                    className="input input-bordered input-primary w-full"
                   />
                   <input
                     type="text"
                     value={editedCardBack}
                     onChange={(e) => setEditedCardBack(e.target.value)}
-                    className="input input-bordered input-secondary w-full"
+                    className="input input-bordered input-primary w-full"
                   />
                   <select
-                    className="select select-bordered input-secondary w-full"
+                    className="select select-bordered input-primary w-full"
                     value={editedCardLevel} // On utilise ici editedCardLevel
                     onChange={(e) => handleLevelChange(parseInt(e.target.value, 10))}
                   >
@@ -144,7 +143,7 @@ const CardManagement = () => {
                     </button>
                     <button
                       onClick={() => setEditingCardId(null)}
-                      className="btn btn-secondary flex-1"
+                      className="btn btn-primary bg-gray-600 text-white hover:bg-gray-700 flex-"
                     >
                       Annuler
                     </button>
