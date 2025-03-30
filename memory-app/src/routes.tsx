@@ -1,12 +1,20 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Info from "./pages/Info";
+import Creation from "./pages/Creation";
+import CardCreation from "./pages/CardCreation";
+import ThemeCreation from "./pages/ThemeCreation";
+import Memory from "./pages/Memory";
+import Settings from "./pages/Settings";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/info" element={<Info />} />
+      <Route path="/creation" element={<Creation />} />
+      <Route path="/creation/:categoryId" element={<ThemeCreation />} />
+      <Route path="/creation/:categoryId/:themeId" element={<CardCreation />} />
+      <Route path="/memory" element={<Memory />} />
+      <Route path="/settings" element={<Settings />} />
     </Routes>
   );
 };

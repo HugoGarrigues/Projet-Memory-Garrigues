@@ -11,18 +11,23 @@ const Navbar = () => {
             </svg>
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><a><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></a></li>
-            <li><a><Link to="/info" className="hover:text-gray-400 transition duration-300">Info</Link></a></li></ul>
+            <li><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></li>
+            <li><Link to="/creation" className="hover:text-gray-400 transition duration-300">Creation</Link></li>
+            <li><Link to="/memory" className="hover:text-gray-400 transition duration-300">Memory</Link></li>
+            <li><Link to="/settings" className="hover:text-gray-400 transition duration-300">Settings</Link></li>
+          </ul>
         </div>
         <div className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <li><a><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></a></li>
-            <li><a><Link to="/info" className="hover:text-gray-400 transition duration-300">Info</Link></a></li>
+            <li><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></li>
+            <li><Link to="/creation" className="hover:text-gray-400 transition duration-300">Creation</Link></li>
+            <li><Link to="/memory" className="hover:text-gray-400 transition duration-300">Mémoire</Link></li>
+            <li><Link to="/settings" className="hover:text-gray-400 transition duration-300">Réglages</Link></li>
           </ul>
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost text-xl">Memory</a>
+        <Link to="/" className="btn btn-ghost text-xl">Memory</Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">

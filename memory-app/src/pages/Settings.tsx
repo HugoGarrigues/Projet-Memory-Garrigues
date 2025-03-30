@@ -1,12 +1,12 @@
 import Card from "../components/Card";
 
-const Info = () => {
+const Settings = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <Card title="Info"/>
+      <Card title="Settings"/>
     </div>
   )
   };
   
-  export default Info;
+  export default Settings;
   
