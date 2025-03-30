@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useMemoryStore from "../store/UseMemoryStore";
 
 const CategoryManagement = () => {
-  const { categories, addCategory, removeCategory, updateCategory, selectCategory } = useMemoryStore();
+  const { categories, addCategory, removeCategory, updateCategory } = useMemoryStore();
   const [newCategory, setNewCategory] = useState<string>("");
 
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
@@ -39,9 +39,7 @@ const CategoryManagement = () => {
     removeCategory(categoryId);
   };
 
-  const handleSelectCategory = (categoryId: number) => {
-    selectCategory(categoryId);  
-  };
+
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -95,12 +93,6 @@ const CategoryManagement = () => {
               ) : (
                 <div className="flex flex-col space-y-4">
                   <div className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      checked={category.selected}
-                      onChange={() => handleSelectCategory(category.id)} // Sélectionne la catégorie
-                      className="radio radio-primary"
-                    />
                     <Link
                       to={`/creation/${category.id}`}
                       className="text-2xl font-semibold text-accent hover:text-accent-focus"

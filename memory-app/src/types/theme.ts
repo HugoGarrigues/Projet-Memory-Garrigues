@@ -6,4 +6,6 @@ export interface Theme {
     categoryId: number; 
     cards: Card[];  
     selected: boolean;
+    revisionLevels: number; 
+    newCardsPerDay: number;
   }

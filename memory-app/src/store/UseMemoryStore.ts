@@ -43,12 +43,24 @@ const useMemoryStore = () => {
   const addTheme = (categoryId: number, theme: Theme) => {
     setCategories((prev) =>
       prev.map((category) =>
-        category.id === categoryId ? { ...category, themes: [...category.themes, theme] } : category
+        category.id === categoryId
+          ? {
+              ...category,
+              themes: [
+                ...category.themes,
+                {
+                  ...theme,
+                  revisionLevels: Math.min(theme.revisionLevels ?? 1, 4), 
+                  newCardsPerDay: Math.min(theme.newCardsPerDay ?? 10, 10), 
+                },
+              ],
+            }
+          : category
       )
     );
   };
 
-  // Permet d'ajouter une carte dans un thème
+  // Ajoute une carte dans un thème
   const addCard = (themeId: number, card: Card) => {
     setCategories((prev) =>
       prev.map((category) => ({
@@ -60,7 +72,7 @@ const useMemoryStore = () => {
     );
   };
 
-  //  supprimer une carte d'un thème
+  // Supprime une carte d'un thème
   const removeCard = (themeId: number, cardId: number) => {
     setCategories((prev) =>
       prev.map((category) => ({
@@ -96,19 +108,27 @@ const useMemoryStore = () => {
   };
 
   // Modifie un thème
-  const updateTheme = (categoryId: number, themeId: number, newName: string) => {
+  const updateTheme = (categoryId: number, themeId: number, updatedTheme: Theme) => {
     setCategories((prev) =>
       prev.map((category) =>
         category.id === categoryId
           ? {
               ...category,
-              themes: category.themes.map((theme) => (theme.id === themeId ? { ...theme, name: newName } : theme)),
+              themes: category.themes.map((theme) =>
+                theme.id === themeId
+                  ? {
+                      ...theme,
+                      name: updatedTheme.name,
+                      revisionLevels: Math.min(updatedTheme.revisionLevels ?? theme.revisionLevels, 4),
+                      newCardsPerDay: Math.min(updatedTheme.newCardsPerDay ?? theme.newCardsPerDay, 10), 
+                    }
+                  : theme
+              ),
             }
           : category
       )
     );
   };
-
   // Modifie une carte
   const updateCard = (cardId: number, updatedCard: Card) => {
     setCategories((prev) =>
@@ -122,43 +142,29 @@ const useMemoryStore = () => {
     );
   };
 
-  // Récupérer les cartes à réviser ( ne prend pas en compte les niveaux de révision )
+  // Récupère les cartes à réviser (ne prend pas en compte les niveaux de révision)
   const getCardsToReview = (): Card[] => {
-    return categories.flatMap(category =>
-      category.themes.flatMap(theme =>
-        theme.cards
-      )
+    return categories.flatMap((category) =>
+      category.themes.flatMap((theme) => theme.cards)
     );
   };
 
-  // Fonction pour sélectionner une catégorie (une seule à la fois)
-  const selectCategory = (categoryId: number) => {
+  // Sélectionne et/ou désélectionne un thème
+  const selectTheme = (categoryId: number, themeId: number) => {
     setCategories((prev) =>
-      prev.map((category) => ({
-        ...category,
-        selected: category.id === categoryId, // Si l'ID correspond, la catégorie est sélectionnée
-      }))
+      prev.map((category) => {
+        if (category.id === categoryId) {
+          return {
+            ...category,
+            themes: category.themes.map((theme) =>
+              theme.id === themeId ? { ...theme, selected: !theme.selected } : theme
+            ),
+          };
+        }
+        return category;
+      })
     );
   };
-
-    // Permet de sélectionner et ou désélectionner un thème
-    const selectTheme = (categoryId: number, themeId: number) => {
-      setCategories((prev) =>
-        prev.map((category) => {
-          if (category.id === categoryId) {
-            return {
-              ...category,
-              themes: category.themes.map((theme) =>
-                theme.id === themeId
-                  ? { ...theme, selected: !theme.selected }  
-                  : theme
-              ),
-            };
-          }
-          return category;
-        })
-      );
-    };
 
   return {
     // Fonctions pour la gestion des catégories, thèmes et cartes
@@ -172,11 +178,9 @@ const useMemoryStore = () => {
     updateCategory,
     updateTheme,
     updateCard,
-    selectCategory,  
-    selectTheme,   
+    selectTheme,
     // Fonction pour récupérer les cartes à réviser
     getCardsToReview,
- 
   };
 };
 

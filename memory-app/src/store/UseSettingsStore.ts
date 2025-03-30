@@ -9,8 +9,7 @@ const useSettingsStore = () => {
 
   const updateSettings = (newSettings: Settings) => {
     const validatedSettings = {
-      ...newSettings,
-      newCardsPerDay: Math.min(newSettings.newCardsPerDay, 15), 
+      ...newSettings
     };
 
     setSettings(validatedSettings);
