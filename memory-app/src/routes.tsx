@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Creation from "./pages/Creation";
 import CardCreation from "./pages/CardCreation";
 import ThemeCreation from "./pages/ThemeCreation";
-import Memory from "./pages/Memory";
 import Settings from "./pages/Settings";
 
 const AppRoutes = () => {
@@ -13,7 +12,6 @@ const AppRoutes = () => {
       <Route path="/creation" element={<Creation />} />
       <Route path="/creation/:categoryId" element={<ThemeCreation />} />
       <Route path="/creation/:categoryId/:themeId" element={<CardCreation />} />
-      <Route path="/memory" element={<Memory />} />
       <Route path="/settings" element={<Settings />} />
     </Routes>
   );

@@ -13,7 +13,6 @@ const Navbar = () => {
           <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></li>
             <li><Link to="/creation" className="hover:text-gray-400 transition duration-300">Creation</Link></li>
-            <li><Link to="/memory" className="hover:text-gray-400 transition duration-300">Memory</Link></li>
             <li><Link to="/settings" className="hover:text-gray-400 transition duration-300">Settings</Link></li>
           </ul>
         </div>
@@ -21,7 +20,6 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">
             <li><Link to="/" className="hover:text-gray-400 transition duration-300">Home</Link></li>
             <li><Link to="/creation" className="hover:text-gray-400 transition duration-300">Creation</Link></li>
-            <li><Link to="/memory" className="hover:text-gray-400 transition duration-300">Mémoire</Link></li>
             <li><Link to="/settings" className="hover:text-gray-400 transition duration-300">Réglages</Link></li>
           </ul>
         </div>
