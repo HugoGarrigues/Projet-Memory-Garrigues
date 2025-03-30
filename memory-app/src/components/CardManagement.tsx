@@ -128,7 +128,7 @@ const CardManagement = () => {
                     value={editedCardLevel} // On utilise ici editedCardLevel
                     onChange={(e) => handleLevelChange(parseInt(e.target.value, 10))}
                   >
-                    {[1, 2, 3, 4, 5].map((lvl) => (
+                    {[1, 2, 3, 4].map((lvl) => (
                       <option key={lvl} value={lvl}>
                         Niveau {lvl}
                       </option>
