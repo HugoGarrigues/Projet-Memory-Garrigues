@@ -6,18 +6,12 @@ import { Card } from "../types/card";
 
 const useMemoryStore = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [newCardsToday, setNewCardsToday] = useState(0);
 
   // Utilisation de useEffect qui va permettre de récupérer les catégories sauvegardées dans le localStorage
   useEffect(() => {
     const savedCategories = localStorage.getItem("categories");
     if (savedCategories) {
       setCategories(JSON.parse(savedCategories));
-    }
-
-    const savedNewCardsToday = localStorage.getItem("newCardsToday");
-    if (savedNewCardsToday) {
-      setNewCardsToday(JSON.parse(savedNewCardsToday));
     }
   }, []);
 
@@ -29,10 +23,6 @@ const useMemoryStore = () => {
       localStorage.removeItem("categories");
     }
   }, [categories]);
-
-  useEffect(() => {
-    localStorage.setItem("newCardsToday", JSON.stringify(newCardsToday));
-  }, [newCardsToday]);
 
   // Permet d'ajouter une catégorie
   const addCategory = (category: Category) => {
